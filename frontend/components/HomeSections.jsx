@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FadeIn, HeroMotion } from "@/components/Animated";
 import MenuExplorer from "@/components/MenuExplorer";
 import { useEditableContent } from "@/components/useEditableContent";
@@ -143,7 +144,29 @@ export function MenuSection() {
 }
 
 export function ReviewsSection() {
-  const { business, reviews } = useEditableContent();
+  const { business } = useEditableContent();
+  const [googleReviews, setGoogleReviews] = useState([]);
+  const [reviewMeta, setReviewMeta] = useState(null);
+  const [reviewMessage, setReviewMessage] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/google-reviews")
+      .then((response) => response.json())
+      .then((data) => {
+        if (!isMounted) return;
+        setGoogleReviews(data.reviews || []);
+        setReviewMeta({ rating: data.rating, total: data.total, placeUrl: data.placeUrl });
+        setReviewMessage(data.message || "");
+      })
+      .catch(() => {
+        if (isMounted) setReviewMessage("Unable to load Google reviews right now.");
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section id="reviews" className="relative overflow-hidden bg-white py-20">
@@ -152,8 +175,10 @@ export function ReviewsSection() {
         <FadeIn className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-ember">Reviews</p>
-            <h2 className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[#15120f] sm:text-6xl">A cafe guests remember.</h2>
-            <p className="mt-5 max-w-xl text-base leading-7 text-cedar/64">Soft shadows, warm craft tones, and generous breathing room give the review section a calm premium feel while keeping Google reviews easy to find.</p>
+            <h2 className="mt-3 text-5xl font-semibold tracking-[-0.05em] text-[#15120f] sm:text-6xl">Real words from Google.</h2>
+            <p className="mt-5 max-w-xl text-base leading-7 text-cedar/64">
+              {reviewMeta?.rating ? `Rated ${reviewMeta.rating} on Google from ${reviewMeta.total || "guest"} reviews.` : "Read the latest guest feedback directly from Google."}
+            </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
             <LinkPill href={business.reviewLink} tone="dark">Review on Google</LinkPill>
@@ -161,22 +186,34 @@ export function ReviewsSection() {
           </div>
         </FadeIn>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-[1.1fr_0.9fr_1fr]">
-          {reviews.map((review, index) => (
-            <FadeIn
-              key={review.name}
-              delay={index * 0.08}
-              className={`rounded-[2rem] border border-black/5 p-7 shadow-[0_24px_70px_rgba(42,30,21,0.09)] ${index === 1 ? "bg-[#15120f] text-white lg:-mt-6" : "bg-[#f8f3eb] text-cedar"}`}
-            >
-              <div className="flex items-center justify-between gap-4">
-                <p className={`text-sm font-semibold ${index === 1 ? "text-turmeric" : "text-ember"}`}>{review.rating} ★★★★★</p>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${index === 1 ? "bg-white/10 text-white/70" : "bg-white text-cedar/60"}`}>Google</span>
-              </div>
-              <p className={`mt-8 text-2xl font-semibold leading-9 tracking-[-0.035em] ${index === 1 ? "text-white" : "text-[#18120f]"}`}>&ldquo;{review.text}&rdquo;</p>
-              <p className={`mt-8 text-sm font-semibold ${index === 1 ? "text-white/68" : "text-cedar/62"}`}>{review.name}</p>
-            </FadeIn>
-          ))}
-        </div>
+        {googleReviews.length > 0 ? (
+          <div className="mt-12 grid gap-5 lg:grid-cols-[1.1fr_0.9fr_1fr]">
+            {googleReviews.slice(0, 3).map((review, index) => (
+              <FadeIn
+                key={`${review.name}-${index}`}
+                delay={index * 0.08}
+                className={`rounded-[2rem] border border-black/5 p-7 shadow-[0_24px_70px_rgba(42,30,21,0.09)] ${index === 1 ? "bg-[#15120f] text-white lg:-mt-6" : "bg-[#f8f3eb] text-cedar"}`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <p className={`text-sm font-semibold ${index === 1 ? "text-turmeric" : "text-ember"}`}>{review.rating} ★★★★★</p>
+                  <span className={`rounded-full px-3 py-1 text-xs font-semibold ${index === 1 ? "bg-white/10 text-white/70" : "bg-white text-cedar/60"}`}>Google</span>
+                </div>
+                <p className={`mt-8 text-2xl font-semibold leading-9 tracking-[-0.035em] ${index === 1 ? "text-white" : "text-[#18120f]"}`}>&ldquo;{review.text}&rdquo;</p>
+                <p className={`mt-8 text-sm font-semibold ${index === 1 ? "text-white/68" : "text-cedar/62"}`}>{review.name}{review.relativeTime ? ` • ${review.relativeTime}` : ""}</p>
+              </FadeIn>
+            ))}
+          </div>
+        ) : (
+          <FadeIn className="mt-12 rounded-[2rem] border border-black/5 bg-[#f8f3eb] p-7 text-cedar shadow-[0_24px_70px_rgba(42,30,21,0.09)]">
+            <p className="text-lg font-semibold text-[#15120f]">Google reviews are ready to connect.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-cedar/64">
+              {reviewMessage || "Set GOOGLE_MAPS_API_KEY and GOOGLE_PLACE_ID in Vercel to show live Google reviews here."}
+            </p>
+            <a href={safeExternalUrl(business.reviewLink)} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full bg-[#15120f] px-5 py-3 text-sm font-semibold text-white">
+              Open Google reviews
+            </a>
+          </FadeIn>
+        )}
       </div>
     </section>
   );

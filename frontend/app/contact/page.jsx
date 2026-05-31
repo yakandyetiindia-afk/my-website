@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { FadeIn } from "@/components/Animated";
 import { business } from "@/data/site";
 import { digitsOnly, safeExternalUrl } from "@/lib/safeUrl";
+import { InstagramIcon, WhatsAppIcon } from "@/components/BrandIcons";
 
 export const metadata = {
   title: "Contact",
@@ -30,14 +31,20 @@ export default function ContactPage() {
             <div className="mt-8 space-y-4 text-sm">
               <a href={`tel:${business.phone}`} className="block rounded-2xl bg-white/8 p-4 transition hover:bg-white/12">
                 <span className="block text-white/46">Phone</span>
-                <span className="mt-1 block font-bold">{business.phone}</span>
+                <span className="mt-1 flex items-center gap-2 font-bold">
+                  <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+                  {business.phone}
+                </span>
               </a>
               <a href={whatsappUrl} target="_blank" rel="noreferrer" className="block rounded-2xl bg-ember p-4 font-bold text-white transition hover:bg-turmeric hover:text-cedar">
                 Order or ask on WhatsApp
               </a>
               <a href={safeExternalUrl(business.instagram)} target="_blank" rel="noreferrer" className="block rounded-2xl bg-white/8 p-4 transition hover:bg-white/12">
                 <span className="block text-white/46">Instagram</span>
-                <span className="mt-1 block font-bold">@yakkandyetii</span>
+                <span className="mt-1 flex items-center gap-2 font-bold">
+                  <InstagramIcon className="h-5 w-5 text-[#C13584]" />
+                  @yakkandyetii
+                </span>
               </a>
               <a href={safeExternalUrl(business.zomato)} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl bg-[#e23744] p-4 font-bold text-white transition hover:bg-[#cb202d]">
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white font-black tracking-[-0.08em] text-[#e23744]">z</span>
