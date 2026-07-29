@@ -7,12 +7,23 @@ export function useEditableContent() {
   const [content, setContent] = useState(defaultContent);
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(CONTENT_STORAGE_KEY);
-      if (stored) setContent(mergeContent(JSON.parse(stored)));
-    } catch {
-      setContent(defaultContent);
+    function loadContent() {
+      try {
+        const stored = window.localStorage.getItem(CONTENT_STORAGE_KEY);
+        setContent(stored ? mergeContent(JSON.parse(stored)) : defaultContent);
+      } catch {
+        setContent(defaultContent);
+      }
     }
+
+    loadContent();
+    window.addEventListener("yak-yeti-content-updated", loadContent);
+    window.addEventListener("storage", loadContent);
+
+    return () => {
+      window.removeEventListener("yak-yeti-content-updated", loadContent);
+      window.removeEventListener("storage", loadContent);
+    };
   }, []);
 
   return content;

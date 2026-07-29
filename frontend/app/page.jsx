@@ -1,18 +1,27 @@
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Hero, MenuSection, ReviewsSection, ReviewQrSection } from "@/components/HomeSections";
+import Header from "@/components/Header";
+import {
+  ContactSection,
+  Hero,
+  HighlightsSection,
+  LaphingLaunchBanner,
+  MenuSection,
+  ReviewQrSection,
+  ReviewsSection
+} from "@/components/HomeSections";
 
 export default function HomePage() {
   return (
-    <>
+    <main className="min-h-screen bg-linen text-smoke">
+      <LaphingLaunchBanner />
       <Header />
-      <main>
-        <Hero />
-        <MenuSection />
-        <ReviewsSection />
-        <ReviewQrSection />
-      </main>
+      <Hero />
+      <HighlightsSection />
+      <MenuSection />
+      <ReviewsSection />
+      <ReviewQrSection />
+      <ContactSection />
       <Footer />
-    </>
+    </main>
   );
 }

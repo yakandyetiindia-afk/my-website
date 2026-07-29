@@ -1,27 +1,25 @@
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://yakandyetis.example"),
+  metadataBase: new URL("https://yakkandyetii.com"),
   title: {
-    default: "Yak & Yeti's | Himalayan Comfort Food Cafe",
+    default: "Yak & Yeti's | Himalayan Comfort Food",
     template: "%s | Yak & Yeti's"
   },
   description:
-    "Premium modern Nepalese cafe serving Himalayan coffee, fresh momos, thukpa, thalis, and warm comfort food. Order on WhatsApp or visit Yak & Yeti's.",
+    "Premium Nepali cafe serving momo, jhol momo, Thakali thali, Chow Chow, Sadeko, coffee, chai, and Himalayan comfort food.",
   keywords: [
-    "Yak and Yeti's",
-    "Nepalese cafe",
-    "momos",
-    "Himalayan coffee",
-    "Nepali food",
-    "Thukpa",
-    "WhatsApp order",
-    "Zomato cafe"
+    "Yak and Yeti",
+    "Nepali cafe",
+    "momo",
+    "jhol momo",
+    "Thakali thali",
+    "Himalayan comfort food",
+    "Nepali food"
   ],
   openGraph: {
     title: "Yak & Yeti's | Himalayan Comfort Food",
-    description: "Coffee, momos, and Nepalese comfort food with a premium modern cafe feel.",
-    images: ["/yak-yeti-logo.jpg"]
+    description: "Momo, Thakali thali, chai, coffee, and Nepali street bites with a premium cafe experience."
   }
 };
 

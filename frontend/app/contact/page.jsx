@@ -1,85 +1,71 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { FadeIn } from "@/components/Animated";
-import { business } from "@/data/site";
-import { digitsOnly, safeExternalUrl } from "@/lib/safeUrl";
-import { InstagramIcon, WhatsAppIcon } from "@/components/BrandIcons";
+"use client";
 
-export const metadata = {
-  title: "Contact",
-  description: "Contact Yak & Yeti's for WhatsApp orders, Instagram, Google Maps directions, and cafe details."
-};
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { InstagramIcon, WhatsAppIcon } from "@/components/BrandIcons";
+import { useEditableContent } from "@/components/useEditableContent";
+import { digitsOnly, safeExternalUrl } from "@/lib/safeUrl";
 
 export default function ContactPage() {
-  const whatsappUrl = `https://wa.me/${digitsOnly(business.whatsapp)}?text=${encodeURIComponent("Namaste Yak & Yeti's, I would like cafe details and menu help.")}`;
+  const { business } = useEditableContent();
+  const whatsappUrl = `https://wa.me/${digitsOnly(business.whatsapp)}?text=${encodeURIComponent("Namaste Yak & Yeti's, I would like to order from the menu.")}`;
 
   return (
-    <>
+    <main className="min-h-screen bg-[#f7f2ea] text-[#15120f]">
       <Header />
-      <main className="bg-[#f5f1ea]">
-        <section className="mx-auto max-w-5xl px-4 pb-8 pt-16 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-ember">Contact</p>
-          <h1 className="mt-3 text-5xl font-semibold tracking-[-0.055em] text-[#15120f] sm:text-7xl">Find us fast.</h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-cedar/66">Maps, Zomato, WhatsApp, Instagram, and Google reviews stay easy to reach from every screen.</p>
-        </section>
+      <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_14%_4%,rgba(217,154,56,0.24),transparent_30rem),radial-gradient(circle_at_84%_16%,rgba(63,114,109,0.14),transparent_34rem)]" />
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-ember">Contact</p>
+            <h1 className="mt-4 text-balance text-6xl font-extrabold leading-[0.9] tracking-[-0.06em] sm:text-8xl">
+              Find Yak & Yeti&apos;s fast.
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-xl font-medium leading-8 text-cedar/64">
+              Order on WhatsApp, open Google Maps, follow Instagram, or jump to Zomato.
+            </p>
+          </div>
 
-        <FadeIn className="mx-auto grid max-w-7xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:px-8">
-          <section className="rounded-[2rem] bg-[#15120f] p-8 text-white shadow-[0_32px_90px_rgba(0,0,0,0.18)] sm:p-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-turmeric">Yak & Yeti&apos;s</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em]">Come for coffee. Stay for momos.</h2>
-            <p className="mt-5 text-white/64">{business.hours}</p>
-            <div className="mt-8 space-y-4 text-sm">
-              <a href={`tel:${business.phone}`} className="block rounded-2xl bg-white/8 p-4 transition hover:bg-white/12">
-                <span className="block text-white/46">Phone</span>
-                <span className="mt-1 flex items-center gap-2 font-bold">
-                  <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
-                  {business.phone}
-                </span>
-              </a>
-              <a href={whatsappUrl} target="_blank" rel="noreferrer" className="block rounded-2xl bg-ember p-4 font-bold text-white transition hover:bg-turmeric hover:text-cedar">
-                Order or ask on WhatsApp
-              </a>
-              <a href={safeExternalUrl(business.instagram)} target="_blank" rel="noreferrer" className="block rounded-2xl bg-white/8 p-4 transition hover:bg-white/12">
-                <span className="block text-white/46">Instagram</span>
-                <span className="mt-1 flex items-center gap-2 font-bold">
-                  <InstagramIcon className="h-5 w-5 text-[#C13584]" />
-                  @yakkandyetii
-                </span>
-              </a>
-              <a href={safeExternalUrl(business.zomato)} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl bg-[#e23744] p-4 font-bold text-white transition hover:bg-[#cb202d]">
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-white font-black tracking-[-0.08em] text-[#e23744]">z</span>
-                Available on Zomato
-              </a>
+          <div className="mt-14 grid gap-5 lg:grid-cols-[0.86fr_1.14fr]">
+            <div className="rounded-[2.5rem] border border-black/5 bg-white/82 p-8 shadow-[0_28px_80px_rgba(50,30,17,0.11)] backdrop-blur sm:p-10">
+              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-ember">Social</p>
+              <div className="mt-6 grid gap-3">
+                <a href={whatsappUrl} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-[1.5rem] border border-black/5 bg-[#f7f2ea] p-4 text-lg font-extrabold transition hover:-translate-y-0.5 hover:bg-white">
+                  <WhatsAppIcon className="h-7 w-7 text-[#25D366]" />
+                  <span>{business.phone}</span>
+                </a>
+                <a href={safeExternalUrl(business.instagram)} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-[1.5rem] border border-black/5 bg-[#f7f2ea] p-4 text-lg font-extrabold transition hover:-translate-y-0.5 hover:bg-white">
+                  <InstagramIcon className="h-7 w-7 text-[#C13584]" />
+                  <span>Instagram</span>
+                </a>
+                <a href={safeExternalUrl(business.zomato)} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-[1.5rem] bg-[#e23744] p-4 text-lg font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-[#cb202d]">
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-white font-black tracking-[-0.08em] text-[#e23744]">z</span>
+                  <span>Available on Zomato</span>
+                </a>
+              </div>
+              <div className="mt-8 rounded-[1.5rem] bg-[#15120f] p-5 text-white">
+                <p className="text-sm font-bold text-white/54">Hours</p>
+                <p className="mt-2 text-xl font-extrabold tracking-[-0.03em]">{business.hours}</p>
+              </div>
             </div>
-          </section>
 
-          <section className="overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-[0_24px_70px_rgba(42,30,21,0.1)]">
-            <div className="p-6 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-ember">Google Map</p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-[#15120f]">Directions in one tap.</h2>
-              <p className="mt-3 text-sm leading-6 text-cedar/68">Use Google Maps for the most accurate directions and live location details.</p>
+            <div className="relative min-h-[520px] overflow-hidden rounded-[2.5rem] border border-black/5 bg-[#efe3d2] shadow-[0_28px_80px_rgba(50,30,17,0.11)]">
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(42deg,#efe5d8_0_26px,#dfcfbe_27px_28px),linear-gradient(135deg,#faf8f4,#e9dac8)]" />
+              <div className="absolute left-[45%] top-[46%] h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e23744] shadow-[0_0_0_14px_rgba(226,55,68,0.12)]" />
+              <div className="absolute left-[45%] top-[46%] h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#e23744]/25 [animation:yy-pulse-ring_2.4s_ease-out_infinite]" />
+              <div className="absolute bottom-6 left-6 right-6 rounded-[2rem] bg-white/90 p-6 shadow-[0_18px_44px_rgba(43,25,13,0.12)] backdrop-blur">
+                <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-ember">Google Maps</p>
+                <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.05em]">Open directions.</h2>
+                <p className="mt-3 text-base font-medium leading-7 text-cedar/62">{business.address}</p>
+                <a href={safeExternalUrl(business.maps)} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full bg-[#15120f] px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-cedar">
+                  Open Google Maps
+                </a>
+              </div>
             </div>
-            <div className="aspect-[4/3] border-y border-cedar/10 bg-clay">
-              <iframe
-                title="Yak & Yeti's Google map"
-                src="https://www.google.com/maps?q=Yak%20%26%20Yeti%27s&output=embed"
-                className="h-full w-full"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-            <div className="flex flex-col gap-3 p-6 sm:flex-row sm:p-8">
-              <a href={safeExternalUrl(business.maps)} target="_blank" rel="noreferrer" className="rounded-full bg-cedar px-5 py-3 text-center text-sm font-bold text-linen transition hover:bg-ember">
-                Open Google Maps
-              </a>
-              <a href={safeExternalUrl(business.reviewLink)} target="_blank" rel="noreferrer" className="rounded-full border border-cedar/20 px-5 py-3 text-center text-sm font-bold text-cedar transition hover:border-ember hover:text-ember">
-                Leave a Google Review
-              </a>
-            </div>
-          </section>
-        </FadeIn>
-      </main>
+          </div>
+        </div>
+      </section>
       <Footer />
-    </>
+    </main>
   );
 }
